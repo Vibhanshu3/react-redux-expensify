@@ -1,28 +1,38 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ExpenseForm from './ExpenseForm';
-import { editExpense } from '../actions/expenses';
-import { removeExpense } from '../actions/expenses';
+import { startUpdateExpenses } from '../actions/expenses';
+import { startRemoveExpenses } from '../actions/expenses';
 
 const EditExpensePage = (props) => {
     console.log(props);
     return (
         <div>
-            <ExpenseForm
-                expense={props.expense}
-                onSubmit={(expense) => {
-                    props.dispatch(editExpense(props.expense.id, expense));
+            <div className="page-header">
+                <div className="content-container">
+                    <h1 className="page-header__title">Edit Expense</h1>
+                </div>
+            </div>
+            <div className="content-container">
+                <ExpenseForm
+                    expense={props.expense}
+                    onSubmit={(expense) => {
+                        props.dispatch(startUpdateExpenses(props.expense.id, expense));
+                        props.history.push('/') //redirect to home page
+                    }}>
+
+                </ExpenseForm>
+
+                <button onClick={() => {
+                    props.dispatch(startRemoveExpenses({ id: props.expense.id }));
                     props.history.push('/') //redirect to home page
-                }}>
+                    }}
+                    className="button button--secondary"
+                >Remove Expense
+                </button>
+            </div>
 
-            </ExpenseForm>
-            <button onClick={() => {
-                props.dispatch(removeExpense({ id: props.expense.id }));
-                props.history.push('/') //redirect to home page
 
-            }}
-            >Remove
-            </button>
         </div>
     );
 };
